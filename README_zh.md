@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
       appBar: AppBar(title: Text('Infix Demo')),
       body: 
         - I((c) => Center(child: c)) // 第一个 - 是可选的
-        - I((c) => Padding(padding: EdgeInsets.all(16), child: c,))
+        - I((c) => Padding(padding: .all(16), child: c,))
         - I((c) => Card(elevation: 4, child: c,))
         > Text('Hello, Infix!'),
       );

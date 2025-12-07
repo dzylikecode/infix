@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
       appBar: AppBar(title: Text('Infix Demo')),
       body: 
         - I((c) => Center(child: c))
-        - I((c) => Padding(padding: EdgeInsets.all(16), child: c,))
+        - I((c) => Padding(padding: .all(16), child: c,))
         - I((c) => Card(elevation: 4, child: c,))
         > Text('Hello, Infix!'),
     );
@@ -74,7 +74,7 @@ class MyApp extends StatelessWidget {
       appBar: AppBar(title: Text('Infix Demo')),
       body: 
         - I((c) => Center(child: c))
-        - I((c) => Padding(padding: EdgeInsets.all(16), child: c,))
+        - I((c) => Padding(padding: .all(16), child: c,))
         - I((c) => Card(child: c,))
         - I((c) => SizedBox(width: 200, height: 100, child: c,))
         - I((c) => Center(child: c))
