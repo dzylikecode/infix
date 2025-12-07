@@ -55,6 +55,35 @@ class MyApp extends StatelessWidget {
 }
 ```
 
+It's also very easy to adjust the nesting order and insert new infix Widgets:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:infix/infix.dart';
+
+typedef I = Infix<Widget>;
+
+void main() {
+  runApp(MaterialApp(home: MyApp()));
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Infix Demo')),
+      body: 
+        - I((c) => Center(child: c))
+        - I((c) => Padding(padding: EdgeInsets.all(16), child: c,))
+        - I((c) => Card(child: c,))
+        - I((c) => SizedBox(width: 200, height: 100, child: c,))
+        - I((c) => Center(child: c))
+        > Text('Hello, Infix!'),
+    );
+  }
+}
+```
+
 ## Usage Examples
 
 Use helper methods to simplify the code:

@@ -55,6 +55,36 @@ class MyApp extends StatelessWidget {
 }
 ```
 
+并且非常容易调整嵌套的顺序和插入新的 infix Widget:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:infix/infix.dart';
+
+typedef I = Infix<Widget>;
+
+void main() {
+  runApp(MaterialApp(home: MyApp()));
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Infix Demo')),
+      body: 
+        - I((c) => Center(child: c))
+        - I((c) => Padding(padding: .all(2), child: c,))
+        - I((c) => Card(child: c,))
+        - I((c) => SizedBox(width: 200, height: 100, child: c,))
+        - I((c) => Center(child: c))
+        > Text('Hello, Infix!'),
+    );
+  }
+}
+```
+
+
 ## 使用示例
 
 使用辅助方法简化代码：
