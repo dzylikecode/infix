@@ -3,23 +3,28 @@ import 'package:infix/infix.dart';
 void main() {
   // dart format off
   final tree2 =
-      InfixWidget.infix('A') - InfixWidget.infix('B') - InfixWidget.infix('C') >
-          Widget('Leaf');
+      InfixWidget.infix('A') 
+      - InfixWidget.infix('B') 
+      - InfixWidget.infix('C') 
+      > Widget('Leaf');
 
-  final tree1 = -InfixWidget.infix('A') -
-          InfixWidget.infix('B') -
-          InfixWidget.infix('C') >
-      Widget('Leaf');
+  final tree1 = 
+      - InfixWidget.infix('A') 
+      - InfixWidget.infix('B') 
+      - InfixWidget.infix('C') 
+      > Widget('Leaf');
 
-  final tree3 = -InfixWidget.infix('A') -
-          InfixWidget.infix('B') -
-          InfixWidget.infix('C') >
-      Widget('Leaf');
+  final tree3 = 
+      - InfixWidget.infix('A') 
+        - InfixWidget.infix('B') 
+          - InfixWidget.infix('C') 
+            > Widget('Leaf');
 
-  final Widget tree4 = -Infix<Widget>((child) => InfixWidget('A', child)) -
-          Infix<Widget>((child) => InfixWidget('B', child)) -
-          Infix<Widget>((child) => InfixWidget('C', child)) >
-      Widget('Leaf');
+  final Widget tree4 = 
+        - Infix<Widget>((child) => InfixWidget('A', child)) 
+        - Infix<Widget>((child) => InfixWidget('B', child)) 
+        - Infix<Widget>((child) => InfixWidget('C', child)) 
+        > Widget('Leaf');
   // dart format on
 
   print(tree1);
