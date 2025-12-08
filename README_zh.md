@@ -84,6 +84,7 @@ class MyApp extends StatelessWidget {
 }
 ```
 
+> 和 decorator 有点类似
 
 ## 使用示例
 
