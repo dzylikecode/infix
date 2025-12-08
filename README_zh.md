@@ -84,7 +84,24 @@ class MyApp extends StatelessWidget {
 }
 ```
 
-> 和 decorator 有点类似
+实际上这就是 Python 中的 decorator 
+
+```python
+@center
+@padding(16)
+@card
+def build():
+    return Text('Hello, Infix!')
+```
+
+dart 的类似的就是
+
+```dart
+via((Widget c) => Center(child: c))
+.via((Widget c) => Padding(padding: .all(16), child: c,))
+.via((Widget c) => Card(elevation: 4, child: c,))
+> Text('Hello, Infix!');
+```
 
 ## 使用示例
 
