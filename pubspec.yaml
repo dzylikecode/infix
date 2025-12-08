@@ -1,6 +1,6 @@
 name: infix
 description: A lightweight Dart library that elegantly solves the code nesting problem using infix operators.
-version: 1.1.0
+version: 1.1.1
 repository: https://github.com/dzylikecode/infix
 
 environment:

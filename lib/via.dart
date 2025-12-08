@@ -1,7 +1,7 @@
 typedef ViaBase<L, R> = L Function(R child);
 typedef Via<T> = ViaBase<T, T>;
 
-Via<T> via<T>(Via<T> builder) => builder;
+ViaBase<L, R> via<L, R>(ViaBase<L, R> builder) => builder;
 
 extension ViaBaseExtension<L, R> on ViaBase<L, R> {
   ViaBase<L, T> via<T>(ViaBase<R, T> other) => (child) => this(other(child));

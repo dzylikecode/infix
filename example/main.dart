@@ -22,18 +22,6 @@ void main() {
             > Widget('Leaf');
 
   final Widget tree4 = 
-        - via<Widget>((child) => InfixWidget('A', child)) 
-        | via<Widget>((child) => InfixWidget('B', child)) 
-        | via<Widget>((child) => InfixWidget('C', child)) 
-        > Widget('Leaf');
-
-  final Widget tree5 = 
-        - via<Widget>((child) => InfixWidget('A', child)) 
-        - via<Widget>((child) => InfixWidget('B', child)) 
-        - via<Widget>((child) => InfixWidget('C', child)) 
-        > Widget('Leaf');
-
-  final Widget tree6 = 
         -via((Widget child) => InfixWidget('A', child)) 
         .via((Widget child) => InfixWidget('B', child)) 
         .via((Widget child) => InfixWidget('C', child)) 
@@ -47,10 +35,6 @@ void main() {
   print(tree3);
   print('-----');
   print(tree4);
-  print('-----');
-  print(tree5);
-  print('-----');
-  print(tree6);
 }
 
 class Widget {

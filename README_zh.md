@@ -130,18 +130,6 @@ final tree3 =
           > Widget('Leaf');
 
 final Widget tree4 = 
-      - via<Widget>((child) => InfixWidget('A', child)) 
-      | via<Widget>((child) => InfixWidget('B', child)) 
-      | via<Widget>((child) => InfixWidget('C', child)) 
-      > Widget('Leaf');
-
-final Widget tree5 = 
-      - via<Widget>((child) => InfixWidget('A', child)) 
-      - via<Widget>((child) => InfixWidget('B', child)) 
-      - via<Widget>((child) => InfixWidget('C', child)) 
-      > Widget('Leaf');
-
-final Widget tree6 = 
       -via((Widget child) => InfixWidget('A', child)) 
       .via((Widget child) => InfixWidget('B', child)) 
       .via((Widget child) => InfixWidget('C', child)) 
