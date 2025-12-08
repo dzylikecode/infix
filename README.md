@@ -111,29 +111,40 @@ Different writing styles:
 
 ```dart
 final tree2 =
-    InfixWidget.infix('A') 
-    - InfixWidget.infix('B') 
-    - InfixWidget.infix('C') 
+    InfixWidget.i('A') 
+    | InfixWidget.i('B') 
+    | InfixWidget.i('C') 
     > Widget('Leaf');
 
-final tree1 =
-    - InfixWidget.infix('A') 
-    - InfixWidget.infix('B') 
-    - InfixWidget.infix('C') 
+final tree1 = 
+    - InfixWidget.i('A') 
+    - InfixWidget.i('B') 
+    - InfixWidget.i('C') 
     > Widget('Leaf');
 
-
-final tree3 =
-    - InfixWidget.infix('A') 
-      - InfixWidget.infix('B') 
-        - InfixWidget.infix('C') 
+final tree3 = 
+    - InfixWidget.i('A') 
+      - InfixWidget.i('B') 
+        - InfixWidget.i('C') 
           > Widget('Leaf');
 
 final Widget tree4 = 
-    - Infix<Widget>((child) => InfixWidget('A', child))
-    - Infix<Widget>((child) => InfixWidget('B', child))
-    - Infix<Widget>((child) => InfixWidget('C', child))
-    > Widget('Leaf');
+      - via<Widget>((child) => InfixWidget('A', child)) 
+      | via<Widget>((child) => InfixWidget('B', child)) 
+      | via<Widget>((child) => InfixWidget('C', child)) 
+      > Widget('Leaf');
+
+final Widget tree5 = 
+      - via<Widget>((child) => InfixWidget('A', child)) 
+      - via<Widget>((child) => InfixWidget('B', child)) 
+      - via<Widget>((child) => InfixWidget('C', child)) 
+      > Widget('Leaf');
+
+final Widget tree6 = 
+      -via((Widget child) => InfixWidget('A', child)) 
+      .via((Widget child) => InfixWidget('B', child)) 
+      .via((Widget child) => InfixWidget('C', child)) 
+      > Widget('Leaf');
 ```
 
 Output:

@@ -1,29 +1,42 @@
 import 'package:infix/infix.dart';
+import 'package:infix/via.dart';
 
 void main() {
   // dart format off
   final tree2 =
-      InfixWidget.infix('A') 
-      - InfixWidget.infix('B') 
-      - InfixWidget.infix('C') 
+      InfixWidget.i('A') 
+      | InfixWidget.i('B') 
+      | InfixWidget.i('C') 
       > Widget('Leaf');
 
   final tree1 = 
-      - InfixWidget.infix('A') 
-      - InfixWidget.infix('B') 
-      - InfixWidget.infix('C') 
+      - InfixWidget.i('A') 
+      - InfixWidget.i('B') 
+      - InfixWidget.i('C') 
       > Widget('Leaf');
 
   final tree3 = 
-      - InfixWidget.infix('A') 
-        - InfixWidget.infix('B') 
-          - InfixWidget.infix('C') 
+      - InfixWidget.i('A') 
+        - InfixWidget.i('B') 
+          - InfixWidget.i('C') 
             > Widget('Leaf');
 
   final Widget tree4 = 
-        - Infix<Widget>((child) => InfixWidget('A', child)) 
-        - Infix<Widget>((child) => InfixWidget('B', child)) 
-        - Infix<Widget>((child) => InfixWidget('C', child)) 
+        - via<Widget>((child) => InfixWidget('A', child)) 
+        | via<Widget>((child) => InfixWidget('B', child)) 
+        | via<Widget>((child) => InfixWidget('C', child)) 
+        > Widget('Leaf');
+
+  final Widget tree5 = 
+        - via<Widget>((child) => InfixWidget('A', child)) 
+        - via<Widget>((child) => InfixWidget('B', child)) 
+        - via<Widget>((child) => InfixWidget('C', child)) 
+        > Widget('Leaf');
+
+  final Widget tree6 = 
+        -via((Widget child) => InfixWidget('A', child)) 
+        .via((Widget child) => InfixWidget('B', child)) 
+        .via((Widget child) => InfixWidget('C', child)) 
         > Widget('Leaf');
   // dart format on
 
@@ -35,6 +48,9 @@ void main() {
   print('-----');
   print(tree4);
   print('-----');
+  print(tree5);
+  print('-----');
+  print(tree6);
 }
 
 class Widget {
@@ -50,8 +66,8 @@ class InfixWidget extends Widget {
   final Widget child;
   InfixWidget(String name, this.child) : super(name);
 
-  static Infix<Widget> infix(String name) =>
-      Infix<Widget>((child) => InfixWidget(name, child));
+  static Via<Widget> i(String name) =>
+      via((Widget child) => InfixWidget(name, child));
 
   @override
   String toTreeString([String indent = '']) {
