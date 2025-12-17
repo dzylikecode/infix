@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       appBar: AppBar(title: Text('Infix Demo')),
       body: Center(
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: .all(16),
           child: Card(
             child: Text('Hello')
           )
