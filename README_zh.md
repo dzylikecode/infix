@@ -10,18 +10,21 @@
 // ❌ 过多的嵌套导致难以阅读
 import 'package:flutter/material.dart';
 
-class MyApp extends StatelessWidget {
+class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Infix Demo')),
+      appBar: AppBar(title: const Text('Flutter Infix Example')),
       body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: Card(
-            child: Text('Hello')
-          )
-        )
+        child: ColoredBox(
+          color: Colors.amberAccent,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Card(
+              child: Text('Nested Widgets'),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -32,135 +35,48 @@ class MyApp extends StatelessWidget {
 
 观察到, 嵌套的原因是 Widget 与 Wiget 之间有些不同, 有的是充当 infix 角色, 比如 `Padding`, `Center`, `Card`, 而有的是叶子节点, 比如 `Text`. 只要区分这两种角色, 就可以避免嵌套.
 
-**infix** 库提供了这样一种解决方案，使用 `-` 作用 infix Widget 和 `>` 作用 leaf Widget：
+**infix** 库提供了这样一种解决方案，使用 `-`(wrap/via/-/|) 作用 infix Widget 和 `>` 作用 leaf Widget：
 
 ```dart
-import 'package:flutter/material.dart';
-import 'package:infix/infix.dart';
+class MyHomePage extends StatelessWidget {
+  @Preview(name: "MyHomePage Preview")
+  const MyHomePage({super.key});
 
-typedef I = Via<Widget>;
-
-class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Infix Demo')),
-      body: 
-        - I((c) => Center(child: c)) // 第一个 - 是可选的
-        - I((c) => Padding(padding: .all(16), child: c,))
-        - I((c) => Card(elevation: 4, child: c,))
-        > Text('Hello, Infix!'),
-      );
-  }
-}
-```
-
-并且非常容易调整嵌套的顺序和插入新的 infix Widget:
-
-```dart
-import 'package:flutter/material.dart';
-import 'package:infix/infix.dart';
-
-typedef I = Infix<Widget>;
-
-void main() {
-  runApp(MaterialApp(home: MyApp()));
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Infix Demo')),
-      body: 
-        - I((c) => Center(child: c))
-        - I((c) => Padding(padding: .all(2), child: c,))
-        - I((c) => Card(child: c,))
-        - I((c) => SizedBox(width: 200, height: 100, child: c,))
-        - I((c) => Center(child: c))
-        > Text('Hello, Infix!'),
+      appBar: AppBar(title: const Text('Flutter Infix Example')),
+      body:
+          wrap((c) => Center(child: c))
+              .wrap((c) => ColoredBox(color: Colors.amberAccent, child: c))
+              .wrap((c) => Padding(padding: const .all(16.0), child: c))
+              .wrap((c) => Card(child: c)) >  // 这里作用到 leaf Widget
+          Text('Nested Widgets'),
     );
   }
 }
 ```
 
+并且非常容易调整嵌套的顺序和插入新的 infix Widget。在 vscode 当中，只需要在此行使用快捷键 `Alt+Up/Down` 即可调整顺序。
+
 实际上这就是 Python 中的 decorator 
 
 ```python
-@center
-@padding(16)
-@card
-def build():
-    return Text('Hello, Infix!')
+@Center
+@ColoredBox(Colors.amberAccent)
+@Card
+def build(): return Text('Hello, Infix!')
 ```
 
-dart 的类似的就是
+更多使用示例请参考[example](example/example.md)
+
+## via
+
+目的是用来适配 child 和 parent 类型不一致的场景。这个时候没法推断 child 的类型，必须显式指定类型。
 
 ```dart
-via((Widget c) => Center(child: c))
-.via((Widget c) => Padding(padding: .all(16), child: c,))
-.via((Widget c) => Card(elevation: 4, child: c,))
-> Text('Hello, Infix!');
+via((App c) => PrarentApp(child: c))
+.via((Child c) => App(child: c))
+> Leaf()
 ```
-
-## 使用示例
-
-使用辅助方法简化代码：
-
-```dart
-class InfixWidget extends Widget {
-  final Widget child;
-  
-  InfixWidget(super.name, this.child);
-
-  // 创建一个静态工厂方法
-  static Infix<Widget> infix(String name) =>
-    Infix<Widget>((child) => InfixWidget(name, child));
-}
-
-// 使用简化写法
-final tree = 
-  - InfixWidget.infix('A')
-  - InfixWidget.infix('B')
-  - InfixWidget.infix('C')
-  > Widget('Leaf');
-```
-
-几种风格的写法：
-
-```dart
-final tree2 =
-    InfixWidget.i('A') 
-    | InfixWidget.i('B') 
-    | InfixWidget.i('C') 
-    > Widget('Leaf');
-
-final tree1 = 
-    - InfixWidget.i('A') 
-    - InfixWidget.i('B') 
-    - InfixWidget.i('C') 
-    > Widget('Leaf');
-
-final tree3 = 
-    - InfixWidget.i('A') 
-      - InfixWidget.i('B') 
-        - InfixWidget.i('C') 
-          > Widget('Leaf');
-
-final Widget tree4 = 
-      -via((Widget child) => InfixWidget('A', child)) 
-      .via((Widget child) => InfixWidget('B', child)) 
-      .via((Widget child) => InfixWidget('C', child)) 
-      > Widget('Leaf');
-```
-
-输出：
-```
-- A
-  - B
-    - C
-      - Leaf
-```
-
-
 

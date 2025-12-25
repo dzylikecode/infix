@@ -1,144 +1,78 @@
 # infix
 
-A lightweight Dart library that elegantly solves the code nesting problem using infix operators.
+A lightweight Dart library that elegantly solves code nesting problems using infix operators.
 
 ## Overview
 
-When building nested Widget trees or data structures, you often face "callback hell" or the "pyramid problem". Traditional nested approaches:
+When building nested Widget trees or data structures, you often encounter "callback hell" or the "pyramid problem". The traditional nested approach:
 
 ```dart
-// ❌ Excessive nesting makes code hard to read
+// ❌ Too much nesting makes code hard to read
 import 'package:flutter/material.dart';
 
-class MyApp extends StatelessWidget {
+class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Infix Demo')),
+      appBar: AppBar(title: const Text('Flutter Infix Example')),
       body: Center(
-        child: Padding(
-          padding: .all(16),
-          child: Card(
-            child: Text('Hello')
-          )
-        )
+        child: ColoredBox(
+          color: Colors.amberAccent,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Card(
+              child: Text('Nested Widgets'),
+            ),
+          ),
+        ),
       ),
     );
   }
 }
 ```
 
-While encapsulating deep nesting into separate Widgets can alleviate this issue, these Widgets are often used only once and lack reusability or generality, making naming and definition an additional burden.
+Encapsulating deep nesting as a Widget can help, but often such Widgets are only used once, lack reusability, and naming/definition becomes an extra burden.
 
-By observing the nesting pattern, we notice that some Widgets play an "infix" role (like `Padding`, `Center`, `Card`), while others are leaf nodes (like `Text`). By distinguishing these two roles, we can avoid nesting altogether.
+By observing the nesting, we see that some Widgets act as infix roles (like `Padding`, `Center`, `Card`), while others are leaf nodes (like `Text`). By distinguishing these two roles, we can avoid excessive nesting.
 
-The **infix** library provides a solution using `-` for infix Widgets and `>` for leaf Widgets:
+The **infix** library provides a solution using `-` (wrap/via/-/|) for infix Widgets and `>` for leaf Widgets:
 
 ```dart
-import 'package:flutter/material.dart';
-import 'package:infix/infix.dart';
-
-typedef I = Infix<Widget>;
-
-class MyApp extends StatelessWidget {
+class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Infix Demo')),
-      body: 
-        - I((c) => Center(child: c))
-        - I((c) => Padding(padding: .all(16), child: c,))
-        - I((c) => Card(elevation: 4, child: c,))
-        > Text('Hello, Infix!'),
+      appBar: AppBar(title: const Text('Flutter Infix Example')),
+      body:
+          wrap((c) => Center(child: c))
+              .wrap((c) => ColoredBox(color: Colors.amberAccent, child: c))
+              .wrap((c) => Padding(padding: const EdgeInsets.all(16.0), child: c))
+              .wrap((c) => Card(child: c)) >  // infix applies to leaf Widget
+          Text('Nested Widgets'),
     );
   }
 }
 ```
 
-It's also very easy to adjust the nesting order and insert new infix Widgets:
+It's also very easy to adjust the nesting order and insert new infix Widgets. In VS Code, you can use `Alt+Up/Down` to adjust the order.
+
+This is similar to Python's decorator syntax:
+
+```python
+@Center
+@ColoredBox(Colors.amberAccent)
+@Card
+def build(): return Text('Hello, Infix!')
+```
+
+For more usage examples, see [example/example.md](example/example.md)
+
+## via
+
+The purpose is to adapt scenarios where the child and parent types are inconsistent. In this case, the child type cannot be inferred and must be specified explicitly.
 
 ```dart
-import 'package:flutter/material.dart';
-import 'package:infix/infix.dart';
-
-typedef I = Infix<Widget>;
-
-void main() {
-  runApp(MaterialApp(home: MyApp()));
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Infix Demo')),
-      body: 
-        - I((c) => Center(child: c))
-        - I((c) => Padding(padding: .all(16), child: c,))
-        - I((c) => Card(child: c,))
-        - I((c) => SizedBox(width: 200, height: 100, child: c,))
-        - I((c) => Center(child: c))
-        > Text('Hello, Infix!'),
-    );
-  }
-}
-```
-
-## Usage Examples
-
-Use helper methods to simplify the code:
-
-```dart
-class InfixWidget extends Widget {
-  final Widget child;
-  
-  InfixWidget(super.name, this.child);
-
-  // Create a static factory method
-  static Infix<Widget> infix(String name) =>
-    Infix<Widget>((child) => InfixWidget(name, child));
-}
-
-// Using simplified syntax
-final tree = 
-  - InfixWidget.infix('A')
-  - InfixWidget.infix('B')
-  - InfixWidget.infix('C')
-  > Widget('Leaf');
-```
-
-Different writing styles:
-
-```dart
-final tree2 =
-    InfixWidget.i('A') 
-    | InfixWidget.i('B') 
-    | InfixWidget.i('C') 
-    > Widget('Leaf');
-
-final tree1 = 
-    - InfixWidget.i('A') 
-    - InfixWidget.i('B') 
-    - InfixWidget.i('C') 
-    > Widget('Leaf');
-
-final tree3 = 
-    - InfixWidget.i('A') 
-      - InfixWidget.i('B') 
-        - InfixWidget.i('C') 
-          > Widget('Leaf');
-
-final Widget tree4 = 
-      -via((Widget child) => InfixWidget('A', child)) 
-      .via((Widget child) => InfixWidget('B', child)) 
-      .via((Widget child) => InfixWidget('C', child)) 
-      > Widget('Leaf');
-```
-
-Output:
-```
-- A
-  - B
-    - C
-      - Leaf
+via((App c) => PrarentApp(child: c))
+.via((Child c) => App(child: c))
+> Leaf()
 ```

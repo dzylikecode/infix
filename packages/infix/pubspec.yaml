@@ -1,10 +1,12 @@
 name: infix
 description: A lightweight Dart library that elegantly solves the code nesting problem using infix operators.
 version: 2.0.0
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/dzylikecode/infix
 
 environment:
-  sdk: ">=2.14.0 <4.0.0"
+  sdk: "^3.5.0"
+
+resolution: workspace
 
 dependencies:
   # path: ^1.9.0

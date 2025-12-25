@@ -1,5 +1,4 @@
 import 'package:infix/infix.dart';
-import 'package:infix/via.dart';
 
 void main() {
   // dart format off

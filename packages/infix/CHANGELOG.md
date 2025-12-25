@@ -1,3 +1,23 @@
 ## 1.0.0
 
-- Initial version.
+- infix.
+
+## 1.0.1
+
+- example formatting fixs
+
+## 1.0.2
+
+- update README
+
+## 1.1.0
+
+- via
+
+## 1.1.1
+
+- fix via type
+
+## 2.0.0
+
+- remove infix helper method
