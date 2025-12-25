@@ -1,5 +1,7 @@
 # infix
 
+[English](README.md) | [中文](README_zh.md)
+
 A lightweight Dart library that elegantly solves code nesting problems using infix operators.
 
 ## Overview

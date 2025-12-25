@@ -1,5 +1,7 @@
 # infix
 
+[English](README.md) | [中文](README_zh.md)
+
 一个轻量级的Dart库，使用中缀操作符优雅地解决代码嵌套问题。
 
 ## 概述
